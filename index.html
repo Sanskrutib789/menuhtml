@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Royal Palace | Luxury Dining</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#f3e7d3,#fff8f0);
+color:#222;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 50px;
+background:linear-gradient(90deg,#4b2c20,#8b5e3c);
+color:white;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:26px;
+font-weight:700;
+color:#ffd700;
+}
+
+nav ul{
+display:flex;
+gap:30px;
+list-style:none;
+}
+
+nav ul li a{
+color:white;
+text-decoration:none;
+cursor:pointer;
+}
+
+nav ul li a:hover{
+color:#ffd700;
+}
+
+.hamburger{
+display:none;
+font-size:28px;
+cursor:pointer;
+}
+
+/* HERO */
+.hero{
+height:90vh;
+background:url("https://images.unsplash.com/photo-1555992336-03a23c2e8c9b") center/cover no-repeat;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
+position:relative;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(0,0,0,0.6);
+}
+
+.hero-content{
+position:relative;
+z-index:1;
+}
+
+.hero h1{
+font-size:60px;
+color:#ffd700;
+}
+
+.hero p{
+margin:20px 0;
+font-size:20px;
+}
+
+.hero button{
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:#ffd700;
+color:#4b2c20;
+font-weight:600;
+cursor:pointer;
+}
+
+/* PAGES */
+.page{
+display:none;
+padding:80px 50px;
+text-align:center;
+}
+
+.page.active{
+display:block;
+}
+
+h2{
+margin-bottom:40px;
+font-size:36px;
+color:#4b2c20;
+}
+
+.menu-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+transition:0.4s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.card h3{
+margin:15px 0 5px;
+}
+
+.price{
+font-weight:600;
+margin-bottom:10px;
+color:#8b5e3c;
+}
+
+.card button{
+background:#8b5e3c;
+color:white;
+padding:8px 18px;
+border:none;
+border-radius:20px;
+margin-bottom:15px;
+cursor:pointer;
+}
+
+/* CART */
+.cart{
+position:fixed;
+right:0;
+top:0;
+width:320px;
+height:100%;
+background:white;
+box-shadow:-5px 0 20px rgba(0,0,0,0.2);
+padding:20px;
+overflow-y:auto;
+transform:translateX(100%);
+transition:0.3s;
+}
+
+.cart.active{
+transform:translateX(0);
+}
+
+.total{
+margin-top:20px;
+font-weight:bold;
+}
+
+/* PAYMENT */
+form input{
+padding:10px;
+width:250px;
+margin-bottom:15px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+nav ul{
+display:none;
+flex-direction:column;
+background:#4b2c20;
+position:absolute;
+top:70px;
+right:20px;
+padding:20px;
+}
+nav ul.active{
+display:flex;
+}
+.hamburger{
+display:block;
+}
+.hero h1{
+font-size:40px;
+}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo">Royal Palace</div>
+<ul id="menuList">
+<li><a onclick="showPage('home')">Home</a></li>
+<li><a onclick="showPage('menu')">Menu</a></li>
+<li><a onclick="showPage('desserts')">Desserts</a></li>
+<li><a onclick="showPage('payment')">Payment</a></li>
+<li><a onclick="toggleCart()">🛒 Cart</a></li>
+</ul>
+<span class="hamburger" onclick="toggleMenu()">☰</span>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="page active">
+<div class="hero">
+<div class="hero-content">
+<h1>Welcome to Royal Palace</h1>
+<p>Experience 5-Star Luxury Dining</p>
+<button onclick="showPage('menu')">Explore Menu</button>
+</div>
+</div>
+</div>
+
+<!-- MENU -->
+<div id="menu" class="page">
+<h2>Our Signature Dishes</h2>
+<div class="menu-grid" id="menuGrid"></div>
+</div>
+
+<!-- DESSERTS -->
+<div id="desserts" class="page">
+<h2>Royal Desserts Collection</h2>
+<div class="menu-grid" id="dessertGrid"></div>
+</div>
+
+<!-- PAYMENT -->
+<div id="payment" class="page">
+<h2>Secure Payment</h2>
+<form onsubmit="alert('Payment Successful 🎉');return false;">
+<input type="text" placeholder="Card Number" required><br>
+<input type="text" placeholder="Expiry Date" required><br>
+<input type="text" placeholder="CVV" required><br>
+<button type="submit">Pay Now</button>
+</form>
+</div>
+
+<!-- CART -->
+<div class="cart" id="cart">
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+<div class="total">Total: ₹<span id="total">0</span></div>
+<br>
+<button onclick="showPage('payment')">Checkout</button>
+</div>
+
+<script>
+let total=0;
+
+function addToCart(name,price){
+total+=price;
+document.getElementById("total").innerText=total;
+let item=document.createElement("div");
+item.innerText=name+" - ₹"+price;
+document.getElementById("cartItems").appendChild(item);
+}
+
+function toggleCart(){
+document.getElementById("cart").classList.toggle("active");
+}
+
+function toggleMenu(){
+document.getElementById("menuList").classList.toggle("active");
+}
+
+function showPage(pageId){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(pageId).classList.add("active");
+window.scrollTo(0,0);
+}
+
+const menuItems=[
+["Truffle Pasta",499,"https://images.unsplash.com/photo-1600891964599-f61ba0e24092"],
+["Gourmet Burger",299,"https://images.unsplash.com/photo-1551782450-a2132b4ba21d"],
+["Grilled Steak",799,"https://images.unsplash.com/photo-1504674900247-0877df9cc836"],
+["Margherita Pizza",399,"https://images.unsplash.com/photo-1548365328-9f547fb0953d"],
+["BBQ Chicken",549,"https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"]
+];
+
+const desserts=[
+["Blueberry Cheesecake",299,"https://images.unsplash.com/photo-1551024601-bec78aea704b"],
+["Macarons",179,"https://images.unsplash.com/photo-1505253716362-afaea1d3d1af"],
+["Tiramisu",279,"https://images.unsplash.com/photo-1578985545062-69928b1d9587"],
+["Red Velvet Cake",349,"https://images.unsplash.com/photo-1541781774459-bb2af2f05b55"]
+];
+
+function loadItems(items,gridId){
+let grid=document.getElementById(gridId);
+items.forEach(item=>{
+grid.innerHTML+=`
+<div class="card">
+<img src="${item[2]}">
+<h3>${item[0]}</h3>
+<p class="price">₹${item[1]}</p>
+<button onclick="addToCart('${item[0]}',${item[1]})">Add to Cart</button>
+</div>`;
+});
+}
+
+loadItems(menuItems,"menuGrid");
+loadItems(desserts,"dessertGrid");
+</script>
+
+</body>
+</html>
